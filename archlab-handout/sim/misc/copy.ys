@@ -1,0 +1,41 @@
+# rsum_list - Sum of elements in a linked list
+#author : HackerM
+    .pos 0
+    irmovq stack,%rsp
+    irmovq $3,%rdx
+    irmovq src,%rdi
+    irmovq dest,%rsi
+    call copy_block
+    halt
+
+    .align 8
+# Source block
+src:
+    .quad 0x00a
+    .quad 0x0b0
+    .quad 0xc00
+# Destination block
+dest:
+    .quad 0x111
+    .quad 0x222
+    .quad 0x333
+   
+copy_block:
+    irmovq $0,%rcx
+    jmp test
+dostuff:
+    mrmovq (%rdi),%rax
+    rmmovq %rax,(%rsi)
+    xorq %rax,%rcx
+    irmovq $1,%rax
+    subq %rax,%rdx
+    irmovq $8,%rax
+    addq %rax,%rsi
+    addq %rax,%rdi
+test:
+    andq %rdx,%rdx
+    jg  dostuff
+    rrmovq %rcx,%rax
+    ret
+    .pos 0x200
+stack:
